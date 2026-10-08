@@ -1,0 +1,43 @@
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--duration-instant) var(--ease-standard);
+}
+
+/* Compact (<360px) prev/next buttons: 40x44. */
+@media (max-width: 359.98px) {
+  .compact {
+    width: 40px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iconButton:hover:not(:disabled) {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+
+.iconButton:active:not(:disabled) {
+  transform: scale(0.96);
+  background-image: linear-gradient(var(--color-pressed), var(--color-pressed));
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconButton:active:not(:disabled) {
+    transform: none;
+  }
+}

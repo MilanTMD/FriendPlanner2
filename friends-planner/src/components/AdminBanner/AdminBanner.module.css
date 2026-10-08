@@ -1,0 +1,40 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--admin-banner-h);
+  padding-inline: var(--page-gutter);
+  background: var(--color-warning-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  color: var(--color-warning);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.long {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .short {
+    display: none;
+  }
+  .long {
+    display: inline;
+  }
+}

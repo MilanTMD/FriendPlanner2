@@ -1,0 +1,7 @@
+.date {
+  color-scheme: inherit;
+  font-variant-numeric: tabular-nums;
+  /* Keep the native control from widening its grid column on narrow screens. */
+  min-width: 0;
+  max-width: 100%;
+}

@@ -1,0 +1,90 @@
+.track {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h);
+  padding: 2px;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+:global([data-theme="dark"]) .track {
+  background: var(--color-chip);
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) {
+  .segment {
+    padding: 0 16px;
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+    min-width: 96px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .segment:hover {
+    color: var(--color-text);
+  }
+}
+
+.segment[aria-current="page"],
+.radioInput:checked + .segment {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-1);
+}
+
+:global([data-theme="dark"]) .segment[aria-current="page"],
+:global([data-theme="dark"]) .radioInput:checked + .segment {
+  background: var(--color-surface-raised);
+}
+
+.radio {
+  position: relative;
+  display: inline-flex;
+}
+
+.radioInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.radioInput:focus-visible + .segment {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: var(--space-1-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}

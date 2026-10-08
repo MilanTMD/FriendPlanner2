@@ -1,0 +1,87 @@
+.cell {
+  grid-row: 1 / -1;
+  position: relative;
+  z-index: var(--z-cells);
+  display: block;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  text-align: start;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.num {
+  position: absolute;
+  top: calc((var(--cal-date-row-h) - var(--cal-today-size)) / 2);
+  inset-inline-start: var(--cal-date-inset);
+  min-width: var(--cal-today-size);
+  height: var(--cal-today-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 2px;
+  border-radius: var(--radius-full);
+  font-size: var(--cal-date-size);
+  line-height: 1;
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.today {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--weight-bold);
+}
+
+.firstLong {
+  display: none;
+}
+.firstShort {
+  display: inline;
+}
+
+@media (min-width: 768px) {
+  .firstLong {
+    display: inline;
+  }
+  .firstShort {
+    display: none;
+  }
+}
+
+.more {
+  position: absolute;
+  top: calc((var(--cal-date-row-h) - 16px) / 2);
+  inset-inline-end: 3px;
+  height: 16px;
+  padding-inline: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-chip);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cell:hover {
+    box-shadow: inset 0 0 0 2px var(--color-border-strong);
+  }
+}
+
+.cell:active {
+  box-shadow: inset 0 0 0 2px var(--color-text);
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}

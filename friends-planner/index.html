@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Friends Plans: who's away when</title>
+    <meta name="description" content="A private calendar for our friend group: see who's away when, and add your plans in seconds." />
+    <meta name="theme-color" content="#F6F5F2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111317" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="Friends Plans: who's away when" />
+    <meta property="og:description" content="A private calendar for our friend group: see who's away when, and add your plans in seconds." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Friends Plans" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script src="/theme-init.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loading-shell">
+        <div class="loading-shell__header">
+          <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <rect width="32" height="32" rx="8" class="loading-shell__mark" />
+            <rect x="6" y="8" width="20" height="4.5" rx="2.25" fill="#F59A2E" />
+            <rect x="6" y="14" width="12" height="4.5" rx="2.25" fill="#5CB8F0" />
+            <rect x="12" y="20" width="14" height="4.5" rx="2.25" fill="#E98AC4" />
+          </svg>
+          <span class="loading-shell__name">Friends Plans</span>
+        </div>
+        <div class="loading-shell__toolbar"></div>
+        <div class="loading-shell__grid">
+          <div class="loading-shell__row"></div>
+          <div class="loading-shell__row"></div>
+          <div class="loading-shell__row"></div>
+          <div class="loading-shell__row"></div>
+          <div class="loading-shell__row"></div>
+        </div>
+      </div>
+    </div>
+    <noscript><p class="noscript">Friends Plans needs JavaScript to run.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

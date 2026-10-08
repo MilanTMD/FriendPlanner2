@@ -1,0 +1,44 @@
+.filterButton {
+  flex: none;
+}
+
+.active {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.full {
+  display: inline;
+}
+.compact {
+  display: none;
+}
+
+@media (max-width: 359.98px) {
+  .full {
+    display: none;
+  }
+  .compact {
+    display: inline;
+  }
+}
+
+.topRow {
+  display: flex;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-top: 1px solid var(--color-border);
+}
+
+.row {
+  min-height: 52px;
+  width: 100%;
+}

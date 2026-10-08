@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.netlify/
+test-results/
+playwright-report/
+blob-report/
+*.log
+.DS_Store
+
+# secrets: never commit
+.env
+.env.*
+!.env.example

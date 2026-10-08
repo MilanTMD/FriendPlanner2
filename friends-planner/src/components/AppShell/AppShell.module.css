@@ -1,0 +1,12 @@
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1 1 auto;
+  min-width: 0;
+  outline: none;
+  padding-bottom: var(--page-pad-bottom);
+}

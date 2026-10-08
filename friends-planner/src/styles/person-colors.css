@@ -1,0 +1,12 @@
+[data-color="c1"]  { --bar: var(--person-c1-bar);  --on-bar: var(--person-c1-on-bar);  --dot: var(--person-c1-dot); }
+[data-color="c2"]  { --bar: var(--person-c2-bar);  --on-bar: var(--person-c2-on-bar);  --dot: var(--person-c2-dot); }
+[data-color="c3"]  { --bar: var(--person-c3-bar);  --on-bar: var(--person-c3-on-bar);  --dot: var(--person-c3-dot); }
+[data-color="c4"]  { --bar: var(--person-c4-bar);  --on-bar: var(--person-c4-on-bar);  --dot: var(--person-c4-dot); }
+[data-color="c5"]  { --bar: var(--person-c5-bar);  --on-bar: var(--person-c5-on-bar);  --dot: var(--person-c5-dot); }
+[data-color="c6"]  { --bar: var(--person-c6-bar);  --on-bar: var(--person-c6-on-bar);  --dot: var(--person-c6-dot); }
+[data-color="c7"]  { --bar: var(--person-c7-bar);  --on-bar: var(--person-c7-on-bar);  --dot: var(--person-c7-dot); }
+[data-color="c8"]  { --bar: var(--person-c8-bar);  --on-bar: var(--person-c8-on-bar);  --dot: var(--person-c8-dot); }
+[data-color="c9"]  { --bar: var(--person-c9-bar);  --on-bar: var(--person-c9-on-bar);  --dot: var(--person-c9-dot); }
+[data-color="c10"] { --bar: var(--person-c10-bar); --on-bar: var(--person-c10-on-bar); --dot: var(--person-c10-dot); }
+[data-color="c11"] { --bar: var(--person-c11-bar); --on-bar: var(--person-c11-on-bar); --dot: var(--person-c11-dot); }
+[data-color="c12"] { --bar: var(--person-c12-bar); --on-bar: var(--person-c12-on-bar); --dot: var(--person-c12-dot); }

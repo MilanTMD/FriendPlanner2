@@ -1,0 +1,163 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  font-weight: var(--weight-semibold);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  transition: transform var(--duration-instant) var(--ease-standard);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Loading: label stays in the layout (locks the width) but is invisible; spinner sits on top. */
+.button[data-loading] .label {
+  opacity: 0;
+}
+.spinner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.sm {
+  min-height: var(--control-h-sm);
+  padding: 0 12px;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
+/* Visual height 36px, hit area 44px. */
+.sm::before {
+  content: "";
+  position: absolute;
+  inset: -4px 0;
+}
+
+.lg {
+  min-height: var(--control-h-lg);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.ghost {
+  background: transparent;
+  color: var(--color-text);
+}
+.danger {
+  background: var(--color-danger-solid);
+  color: var(--color-on-danger);
+}
+.dangerGhost {
+  background: transparent;
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+.link {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-xs);
+  font-weight: var(--weight-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  display: inline;
+}
+.link::before {
+  content: "";
+  position: absolute;
+  inset: -12px -4px;
+}
+
+:global(dialog) .secondary,
+:global([data-surface="raised"]) .secondary {
+  background: var(--color-surface-raised);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover:not(:disabled):not([aria-busy]) {
+    background: var(--color-primary-hover);
+  }
+  .secondary:hover:not(:disabled):not([aria-busy]),
+  .ghost:hover:not(:disabled):not([aria-busy]) {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+  .danger:hover:not(:disabled):not([aria-busy]) {
+    background: var(--color-danger-solid-hover);
+  }
+  .dangerGhost:hover:not(:disabled):not([aria-busy]) {
+    background: var(--color-danger-bg);
+  }
+  .link:hover:not(:disabled) {
+    text-decoration-thickness: 2px;
+  }
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.secondary:active:not(:disabled),
+.ghost:active:not(:disabled),
+.dangerGhost:active:not(:disabled) {
+  background-image: linear-gradient(var(--color-pressed), var(--color-pressed));
+}
+.link:active:not(:disabled) {
+  transform: none;
+}
+
+.button:disabled {
+  background: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+  transform: none;
+  background-image: none;
+}
+.ghost:disabled,
+.link:disabled {
+  background: transparent;
+  border-color: transparent;
+}
+.link:disabled {
+  text-decoration: none;
+}
+
+.button[aria-busy] {
+  cursor: progress;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+}

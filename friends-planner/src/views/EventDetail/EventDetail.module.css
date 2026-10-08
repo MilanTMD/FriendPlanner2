@@ -1,0 +1,77 @@
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.owner {
+  display: flex;
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+  margin-bottom: var(--space-4);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.meta li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  min-width: 0;
+}
+
+.meta li > svg {
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.meta li > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.notes {
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+:global([data-theme="dark"]) .notes {
+  background: var(--color-surface);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.actions > * {
+  flex: 1;
+}
+
+.lockHint {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--color-text-muted);
+}

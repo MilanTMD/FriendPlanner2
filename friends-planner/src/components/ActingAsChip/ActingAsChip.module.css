@@ -1,0 +1,106 @@
+/* 36px visual pill inside a 44px hit area. */
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: var(--tap-min);
+  min-width: 0;
+  max-width: 110px;
+  flex: 0 1 auto;
+  touch-action: manipulation;
+  transition: transform var(--duration-instant) var(--ease-standard);
+}
+
+.visual {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  height: 36px;
+  padding: 0 10px 0 8px;
+  background: var(--color-chip);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--weight-semibold);
+}
+
+.dot {
+  flex: none;
+  inline-size: var(--dot-sm);
+  block-size: var(--dot-sm);
+  border-radius: var(--radius-full);
+  background: var(--bar);
+  box-shadow: inset 0 0 0 2px var(--dot);
+}
+
+.emptyDot {
+  flex: none;
+  inline-size: var(--dot-sm);
+  block-size: var(--dot-sm);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-text-muted);
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shield {
+  display: grid;
+  flex: none;
+  color: var(--color-warning);
+}
+
+.skeleton {
+  border-radius: var(--radius-full);
+  margin-inline: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover .visual {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+.chip:active {
+  transform: scale(0.98);
+}
+
+@media (min-width: 768px) {
+  .chip {
+    max-width: 220px;
+  }
+  .visual {
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+  }
+}
+
+/* Below 360px: dot only. */
+@media (max-width: 359.98px) {
+  .chip {
+    width: var(--tap-min);
+    justify-content: center;
+  }
+  .visual {
+    padding: 0;
+    width: 36px;
+    justify-content: center;
+  }
+  .name {
+    display: none;
+  }
+  .shield {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip:active {
+    transform: none;
+  }
+}

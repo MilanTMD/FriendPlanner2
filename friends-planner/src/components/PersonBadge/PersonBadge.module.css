@@ -1,0 +1,57 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dot {
+  flex: none;
+  inline-size: var(--dot-size, var(--dot-md));
+  block-size: var(--dot-size, var(--dot-md));
+  border-radius: var(--radius-full);
+  background: var(--bar);
+  box-shadow: inset 0 0 0 2px var(--dot);
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inline {
+  --dot-size: var(--dot-sm);
+  gap: var(--space-1-5);
+}
+
+.chip {
+  --dot-size: var(--dot-sm);
+  height: 32px;
+  padding: 0 12px 0 10px;
+  gap: var(--space-2);
+  background: var(--color-chip);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.row {
+  --dot-size: var(--dot-md);
+  gap: 10px;
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  font-weight: var(--weight-semibold);
+}
+
+.dot-sm {
+  --dot-size: var(--dot-sm);
+}
+.dot-md {
+  --dot-size: var(--dot-md);
+}
+.dot-lg {
+  --dot-size: var(--dot-lg);
+}

@@ -1,0 +1,240 @@
+.page {
+  padding-top: 0;
+}
+
+.error {
+  max-width: var(--container-outer);
+  margin-inline: auto;
+  padding: 0 var(--page-gutter) var(--space-3);
+}
+
+.frame {
+  max-width: var(--container-outer);
+  margin-inline: auto;
+  padding-inline: max(var(--page-gutter), env(safe-area-inset-left)) max(var(--page-gutter), env(safe-area-inset-right));
+}
+
+/* The only scrolling surface: the page itself never scrolls horizontally. */
+.scroll {
+  overflow: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100dvh - var(--header-h) - var(--toolbar-h) - 24px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  position: relative;
+}
+
+.withBanner {
+  max-height: calc(100dvh - var(--header-h) - var(--toolbar-h) - var(--admin-banner-h) - 24px);
+}
+
+@media (min-width: 768px) {
+  .scroll {
+    border-radius: var(--radius-md);
+  }
+}
+
+/* One grid per row; every row shares the same column template so days line up. */
+.grid {
+  --tl-days: 31;
+  min-width: calc(var(--tl-name-w) + var(--tl-days) * var(--tl-col-min));
+  width: 100%;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--tl-name-w) repeat(var(--tl-days), minmax(var(--tl-col-min), 1fr));
+  border-top: 1px solid var(--color-border);
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+/* ---------- sticky header and away row ---------- */
+.headRow {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky-head);
+  height: var(--tl-head-h);
+  background: var(--color-surface);
+}
+
+.awayRow {
+  position: sticky;
+  top: var(--tl-head-h);
+  z-index: var(--z-sticky-head);
+  height: var(--tl-away-h);
+  background: var(--color-surface);
+}
+
+.nameCell {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  position: sticky;
+  left: 0;
+  z-index: var(--z-sticky-col);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0 8px 0 12px;
+  background: var(--color-surface);
+  border-inline-end: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-medium);
+}
+
+.scroll[data-scrolled="true"] .nameCell {
+  box-shadow: 4px 0 8px -4px var(--sticky-shadow);
+}
+
+.corner {
+  z-index: var(--z-sticky-corner);
+}
+
+.awayLabel {
+  z-index: var(--z-sticky-corner);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.nameText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nameLine {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.you {
+  display: none;
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .you {
+    display: block;
+  }
+}
+
+.headCell {
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  height: var(--tl-head-h);
+  padding: 0;
+  background: var(--color-surface);
+  border-inline-start: 1px solid var(--color-border);
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.weekdayInitial {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+}
+
+.dayNum {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  line-height: 1;
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.todayNum {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--weight-bold);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .headCell:hover {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+.headCell:active {
+  background-image: linear-gradient(var(--color-pressed), var(--color-pressed));
+}
+.headCell:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ---------- away cells ---------- */
+.awayCell {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  border-inline-start: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+
+/* ---------- person rows ---------- */
+.bgCell {
+  grid-row: 1 / -1;
+  z-index: var(--z-cell-bg);
+  border-inline-start: 1px solid var(--color-border);
+  background: transparent;
+}
+
+/* Column treatments (header, away row and rows). */
+.weekendCol {
+  background-color: var(--color-surface-weekend);
+}
+.todayCol {
+  background-color: var(--color-today-bg);
+}
+.mondayCol {
+  border-inline-start-color: var(--color-border-week);
+}
+
+.row > .nameCell[data-color] {
+  grid-column: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row[data-testid="timeline-row"]:hover > .nameCell {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+
+/* Away shading comes last so it wins over the weekend/today column tints. */
+.away1 {
+  background: var(--color-away-1);
+}
+.away2 {
+  background: var(--color-away-2);
+}
+.away3 {
+  background: var(--color-away-3);
+}

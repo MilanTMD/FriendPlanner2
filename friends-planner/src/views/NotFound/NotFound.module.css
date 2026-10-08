@@ -1,0 +1,20 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+  padding: 20dvh var(--page-gutter) 0;
+}
+
+.page > svg {
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: clamp(var(--text-3xl), 1.5rem + 1.6vw, var(--text-4xl));
+  line-height: 1.15;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+}

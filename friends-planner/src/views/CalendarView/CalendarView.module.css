@@ -1,0 +1,9 @@
+.page {
+  padding-top: 0;
+}
+
+.error {
+  max-width: var(--container-outer);
+  margin-inline: auto;
+  padding: 0 var(--page-gutter) var(--space-3);
+}

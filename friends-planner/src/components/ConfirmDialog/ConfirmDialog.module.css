@@ -1,0 +1,24 @@
+.icon {
+  color: var(--color-danger);
+  margin-bottom: var(--space-2);
+  display: grid;
+}
+
+.message {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+}
+
+@media (min-width: 400px) {
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

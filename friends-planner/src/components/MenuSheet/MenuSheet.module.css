@@ -1,0 +1,74 @@
+.identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  padding-bottom: var(--space-2);
+}
+
+.identityHint {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin-inline: calc(var(--sheet-pad) * -1);
+}
+
+.list > li {
+  border-top: 1px solid var(--color-border);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: 0 var(--sheet-pad);
+  color: var(--color-text);
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.row > svg:first-child {
+  color: var(--color-text-muted);
+}
+.row > svg:last-child:not(:first-child) {
+  color: var(--color-text-muted);
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  font-weight: var(--weight-medium);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+
+.row:active {
+  background-image: linear-gradient(var(--color-pressed), var(--color-pressed));
+}
+
+.row:focus-visible {
+  outline-offset: -2px;
+}
+
+.danger,
+.danger > svg:first-child {
+  color: var(--color-danger);
+}
+
+.themeRow {
+  padding: var(--space-3) var(--sheet-pad);
+}

@@ -1,0 +1,87 @@
+.page {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--space-6);
+}
+
+.card {
+  width: var(--gate-card-w);
+  padding: 32px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 40px 32px;
+  }
+}
+
+.card > svg {
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-size: clamp(var(--text-3xl), 1.5rem + 1.6vw, var(--text-4xl));
+  line-height: 1.15;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-1);
+}
+
+.tagline {
+  margin-bottom: var(--space-8);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.lock {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: 12px;
+  background: var(--color-warning-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--color-text);
+}
+.lock > svg {
+  color: var(--color-warning);
+  margin-top: 2px;
+}
+
+/* Admin sign-in card (same look as the gate). */
+.adminWrap {
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+  padding: var(--page-pad-top) var(--page-gutter) 0;
+}
+
+.adminCard {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.adminTitle {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+}

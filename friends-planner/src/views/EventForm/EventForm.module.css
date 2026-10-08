@@ -1,0 +1,128 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.who {
+  min-width: 0;
+}
+
+.whoSet {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.whoLabel {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.radios {
+  display: flex;
+  flex-direction: column;
+}
+
+.radioRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.radioInput {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--space-1);
+  inline-size: var(--checkbox-size);
+  block-size: var(--checkbox-size);
+  margin: 0;
+  transform: translateY(-50%);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radioMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--checkbox-size);
+  block-size: var(--checkbox-size);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.radioInput:checked + .radioMark {
+  border-color: var(--color-primary);
+}
+
+.radioInput:checked + .radioMark::after {
+  content: "";
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+}
+
+.radioInput:focus-visible + .radioMark {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .radioRow:hover {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+
+.newHere {
+  margin-top: var(--space-2);
+}
+
+.groupError {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--color-danger);
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 360px) {
+  .dates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

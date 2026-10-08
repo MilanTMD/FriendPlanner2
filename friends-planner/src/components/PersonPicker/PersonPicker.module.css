@@ -1,0 +1,48 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-top: 1px solid var(--color-border);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding-inline: var(--space-1);
+  touch-action: manipulation;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover {
+    background-image: linear-gradient(var(--color-hover), var(--color-hover));
+  }
+}
+
+.row:active {
+  background-image: linear-gradient(var(--color-pressed), var(--color-pressed));
+}
+
+.row:focus-visible {
+  outline-offset: -2px;
+}
+
+.you {
+  flex: none;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-chip);
+  font-size: var(--text-xs);
+  line-height: 20px;
+  font-weight: var(--weight-bold);
+}
+
+.footer {
+  margin-top: var(--space-4);
+}
