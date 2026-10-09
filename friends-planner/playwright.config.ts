@@ -12,12 +12,15 @@ export default defineConfig({
   retries: 0,
   reporter: [['list'], ['html', { open: 'never' }]],
   ...(existsSync(globalSetup) ? { globalSetup } : {}),
+  timeout: 20_000,
+  expect: { timeout: 5_000 },
   use: {
     baseURL: process.env.BASE_URL ?? 'http://localhost:8888',
     locale: 'en-GB',
     timezoneId: 'Europe/Prague',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    actionTimeout: 5_000,
   },
   webServer: {
     command: 'npm run dev',

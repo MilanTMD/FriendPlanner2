@@ -13,8 +13,8 @@ export function AppShell({ children, showFab }: { children: ReactNode; showFab: 
       <Header />
       <main id="main" className={styles.main} tabIndex={-1}>
         {children}
+        {showFab ? <Fab /> : null}
       </main>
-      {showFab ? <Fab /> : null}
     </div>
   );
 }

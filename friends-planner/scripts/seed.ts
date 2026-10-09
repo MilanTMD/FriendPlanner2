@@ -3,16 +3,21 @@
  *
  *   npm run seed            replace everything with 10 demo friends and about 25 plans
  *   npm run seed -- --empty delete everything and create nothing
+ *   npm run seed -- --base-url http://localhost:8889   seed the production preview instead of netlify dev
  *
+ * It also clears ALL throttle/lock state (group passcode per IP, admin passcode per IP, person PINs) by deleting
+ * the local Blobs "throttle" folders, so a test run that exercises lockouts cannot lock out the next run.
  * LOCAL ONLY: refuses any host other than localhost / 127.0.0.1. The demo PIN for everybody is 1234.
  */
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
 import { addDays, lastOfMonth, todayLocal, toMonthKey, weekdayIndexMon0 } from '../shared/dates';
 import type { ISODate, Person, PersonColorId } from '../shared/types';
 
 if (existsSync('.env')) process.loadEnvFile('.env');
 
-const BASE_URL = process.env.BASE_URL ?? 'http://localhost:8888';
+const baseUrlArg = process.argv.indexOf('--base-url');
+const BASE_URL = (baseUrlArg >= 0 ? process.argv[baseUrlArg + 1] : undefined) ?? process.env.BASE_URL ?? 'http://localhost:8888';
 const DEMO_PIN = '1234';
 const emptyOnly = process.argv.includes('--empty');
 
@@ -30,6 +35,15 @@ if (!groupPasscode || !adminPasscode) {
 }
 
 const cookies = new Map<string, string>();
+
+class ApiFailure extends Error {
+  constructor(
+    readonly status: number,
+    message: string,
+  ) {
+    super(message);
+  }
+}
 
 async function api<T = unknown>(method: string, path: string, body?: unknown): Promise<T> {
   const cookieHeader = [...cookies].map(([k, v]) => `${k}=${v}`).join('; ');
@@ -51,7 +65,7 @@ async function api<T = unknown>(method: string, path: string, body?: unknown): P
   const data = text ? (JSON.parse(text) as unknown) : null;
   if (!response.ok) {
     const message = (data as { error?: { message?: string } } | null)?.error?.message ?? response.statusText;
-    throw new Error(`${method} ${path} failed (${response.status}): ${message}`);
+    throw new ApiFailure(response.status, `${method} ${path} failed (${response.status}): ${message}`);
   }
   return data as T;
 }
@@ -148,14 +162,74 @@ function buildPlans(): PlanSeed[] {
   ];
 }
 
+/** Deletes every "throttle" folder in the local Blobs sandboxes (netlify dev and the production preview). */
+function clearThrottleState(): number {
+  let removed = 0;
+  for (const sandbox of ['blobs-serve', 'preview-blobs']) {
+    for (const area of ['entries', 'metadata']) {
+      const areaDir = join('.netlify', sandbox, area);
+      if (!existsSync(areaDir)) continue;
+      for (const site of readdirSync(areaDir)) {
+        const siteDir = join(areaDir, site);
+        for (const store of readdirSync(siteDir, { withFileTypes: true })) {
+          if (!store.isDirectory() && !store.isFile()) continue;
+          const throttleDir = join(siteDir, store.name, 'throttle');
+          if (existsSync(throttleDir)) {
+            rmSync(throttleDir, { recursive: true, force: true });
+            removed += 1;
+          }
+        }
+      }
+    }
+  }
+  return removed;
+}
+
+/** Deletes everybody, then re-lists and repeats until the list is really empty (bounded). */
+async function deleteAllPeople(): Promise<number> {
+  let deleted = 0;
+  for (let round = 1; round <= 6; round += 1) {
+    const { people } = await api<{ people: Person[] }>('GET', '/people');
+    if (people.length === 0) return deleted;
+    for (const person of people) {
+      try {
+        await api('DELETE', `/people/${person.id}`);
+        deleted += 1;
+      } catch (error) {
+        if (!(error instanceof ApiFailure) || error.status !== 404) throw error;
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100 * round));
+  }
+  const { people } = await api<{ people: Person[] }>('GET', '/people');
+  if (people.length > 0) throw new Error(`Could not delete ${people.length} people after several attempts.`);
+  return deleted;
+}
+
+/** Creates a demo person; if the name is still taken, deletes the current holder and retries once. */
+async function createDemoPerson(friend: { name: string; colorId: PersonColorId }): Promise<Person> {
+  const body = { name: friend.name, colorId: friend.colorId, pin: DEMO_PIN, remember: false };
+  try {
+    return (await api<{ person: Person }>('POST', '/people', body)).person;
+  } catch (error) {
+    if (!(error instanceof ApiFailure) || error.status !== 409) throw error;
+    const { people } = await api<{ people: Person[] }>('GET', '/people');
+    const holder = people.find((p) => p.name.toLocaleLowerCase('en') === friend.name.toLocaleLowerCase('en'));
+    if (holder) await api('DELETE', `/people/${holder.id}`);
+    return (await api<{ person: Person }>('POST', '/people', body)).person;
+  }
+}
+
 async function main(): Promise<void> {
   console.log(`Seeding ${BASE_URL} ...`);
+  // Must happen before any login: a locked group/admin counter would reject the seed's own logins.
+  const cleared = clearThrottleState();
+  console.log(`Cleared throttle/lock state (${cleared} folder${cleared === 1 ? '' : 's'}).`);
   await api('POST', '/session', { passcode: groupPasscode });
   await api('POST', '/admin/session', { passcode: adminPasscode });
 
-  const existing = await api<{ people: Person[] }>('GET', '/people');
-  for (const person of existing.people) await api('DELETE', `/people/${person.id}`);
-  console.log(`Deleted ${existing.people.length} existing people (and their plans).`);
+  const deleted = await deleteAllPeople();
+  console.log(`Deleted ${deleted} existing people (and their plans).`);
 
   if (emptyOnly) {
     console.log('Done: everything deleted, nothing created (--empty).');
@@ -164,12 +238,7 @@ async function main(): Promise<void> {
 
   const idByName = new Map<string, string>();
   for (const friend of FRIENDS) {
-    const { person } = await api<{ person: Person }>('POST', '/people', {
-      name: friend.name,
-      colorId: friend.colorId,
-      pin: DEMO_PIN,
-      remember: false,
-    });
+    const person = await createDemoPerson(friend);
     idByName.set(friend.name, person.id);
   }
   // Creating a person sets a person cookie; plans are created with the admin session instead.

@@ -4,11 +4,6 @@
   gap: var(--space-4);
 }
 
-.badge {
-  display: flex;
-  justify-content: center;
-}
-
 .lock {
   display: flex;
   align-items: flex-start;

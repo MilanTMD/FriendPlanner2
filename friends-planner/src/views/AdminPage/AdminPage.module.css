@@ -63,6 +63,13 @@
   gap: var(--space-2);
 }
 
+/* The per-row delete is a borderless danger-ghost, so ten rows do not form a wall of red outlines.
+   (The shared dangerGhost variant has a 1px border; this override is deliberate and local.) */
+.actions .deleteBtn {
+  background: transparent;
+  border-color: transparent;
+}
+
 .backup {
   margin-top: var(--space-4);
 }
@@ -77,4 +84,13 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--space-3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .actions .deleteBtn:hover:not(:disabled) {
+    background: var(--color-danger-bg);
+  }
+}
+.actions .deleteBtn:active:not(:disabled) {
+  background: var(--color-danger-bg);
 }

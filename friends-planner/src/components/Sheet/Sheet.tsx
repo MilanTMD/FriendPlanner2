@@ -13,6 +13,8 @@ export interface SheetProps {
   variant?: 'sheet' | 'dialog';
   /** Extra header content rendered under the title row (e.g. day navigation). */
   headerExtra?: ReactNode;
+  /** Rendered above the title inside the header (e.g. a person chip). */
+  preTitle?: ReactNode;
   /** Replaces the plain text title (the text is still used as the accessible name). */
   titleContent?: ReactNode;
   testId?: string;
@@ -37,9 +39,12 @@ function lockScroll(lock: boolean) {
  * Native <dialog> opened with showModal(): focus trap, Esc to close, top-layer rendering.
  * Bottom sheet below 768px, right-side panel at 768px and wider (CSS).
  */
-export function Sheet({ title, onClose, children, footer, variant = 'sheet', headerExtra, titleContent, testId, hideTitle }: SheetProps) {
+export function Sheet({ title, onClose, children, footer, variant = 'sheet', headerExtra, preTitle, titleContent, testId, hideTitle }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  // Captured once: React StrictMode re-runs effects, and by then focus is already inside the dialog.
+  const openerRef = useRef<HTMLElement | null | undefined>(undefined);
   const onCloseRef = useRef(onClose);
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -48,13 +53,16 @@ export function Sheet({ title, onClose, children, footer, variant = 'sheet', hea
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return undefined;
-    const opener = realActiveElement();
+    if (openerRef.current === undefined) openerRef.current = realActiveElement();
+    const opener = openerRef.current;
     if (openCount === 0 && opener) rootTrigger = opener;
     openCount += 1;
     lockScroll(true);
     if (!dialog.open) dialog.showModal();
     const target = dialog.querySelector<HTMLElement>('[data-autofocus]');
-    if (target) target.focus();
+    if (target) target.focus({ preventScroll: true });
+    // Always open at the top, whatever got focus.
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
 
     const onCancel = (event: Event) => {
       event.preventDefault();
@@ -92,13 +100,18 @@ export function Sheet({ title, onClose, children, footer, variant = 'sheet', hea
       <div className={styles.panel}>
         {variant === 'sheet' ? <span className={styles.grabber} aria-hidden="true" /> : null}
         <header className={`${styles.header} ${hideTitle ? styles.headerCompact : ''}`}>
-          <h2 id={titleId} className={hideTitle ? 'sr-only' : styles.title}>
-            {titleContent ?? title}
-          </h2>
+          <div className={styles.titleBlock}>
+            {preTitle}
+            <h2 id={titleId} className={hideTitle ? 'sr-only' : styles.title}>
+              {titleContent ?? title}
+            </h2>
+          </div>
           {variant === 'sheet' ? <IconButton icon={X} label="Close" onClick={() => onCloseRef.current()} /> : null}
         </header>
         {headerExtra}
-        <div className={styles.body}>{children}</div>
+        <div ref={bodyRef} className={styles.body}>
+          {children}
+        </div>
         {footer ? <footer className={styles.footer}>{footer}</footer> : null}
       </div>
     </dialog>

@@ -1,7 +1,12 @@
 .region {
   position: fixed;
-  left: 50%;
-  bottom: calc(88px + env(safe-area-inset-bottom));
+  inset: auto auto calc(88px + env(safe-area-inset-bottom)) 50%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
   transform: translateX(-50%);
   width: min(420px, 100vw - 24px);
   z-index: var(--z-toast);
@@ -10,7 +15,7 @@
 
 @media (min-width: 768px) {
   .region {
-    bottom: calc(24px + env(safe-area-inset-bottom));
+    inset-block-end: calc(24px + env(safe-area-inset-bottom));
   }
 }
 

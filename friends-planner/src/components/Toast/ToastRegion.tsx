@@ -51,8 +51,23 @@ function ToastView({ item, onDismiss }: { item: ToastItem; onDismiss: () => void
 
 export function ToastRegion() {
   const { toasts, dismiss } = useToast();
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Keep the region in the top layer, above any open sheet or dialog. Re-showing it moves it to the
+  // end of the top layer, so a toast raised while a dialog is open is still visible.
+  const count = toasts.length;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof el.showPopover !== 'function') return;
+    if (el.matches(':popover-open')) {
+      if (count === 0) return;
+      el.hidePopover();
+    }
+    el.showPopover();
+  }, [count]);
+
   return (
-    <div className={styles.region} aria-live="polite" aria-atomic="false">
+    <div ref={ref} popover="manual" className={styles.region} aria-live="polite" aria-atomic="false">
       <ul className={styles.list}>
         {toasts.map((item) => (
           <ToastView key={item.id} item={item} onDismiss={() => dismiss(item.id)} />

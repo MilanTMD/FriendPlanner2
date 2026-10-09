@@ -80,6 +80,14 @@
   }
 }
 
+/* Below 768px there is no room for the ring dot or the admin shield (the admin banner already signals admin). */
+@media (max-width: 767.98px) {
+  .emptyDot,
+  .shield {
+    display: none;
+  }
+}
+
 /* Below 360px: dot only. */
 @media (max-width: 359.98px) {
   .chip {

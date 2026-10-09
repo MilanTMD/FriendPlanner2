@@ -10,6 +10,11 @@
 }
 
 @media (min-width: 768px) {
+  /* FAB (56px) + its bottom offset (24px) + a gap (16px): the last week row scrolls fully clear of it. */
+  .wrap {
+    padding-bottom: calc(var(--fab-size) + 24px + 16px);
+  }
+
   .grid {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);

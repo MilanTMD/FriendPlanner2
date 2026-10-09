@@ -1,5 +1,5 @@
 import { UserPlus, Users } from 'lucide-react';
-import { useEffect, useMemo, useRef, type CSSProperties } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import {
   eachDay,
@@ -26,6 +26,9 @@ import { AwayRow } from './AwayRow';
 import { TimelineHeader } from './TimelineHeader';
 import { TimelineRow } from './TimelineRow';
 import styles from './Timeline.module.css';
+
+/** Below this visible width a bar's label is hidden rather than shown as a stub. */
+const MIN_VISIBLE_FOR_LABEL = 40;
 
 export function TimelineView() {
   const [match, params] = useRoute('/timeline/:month');
@@ -76,10 +79,54 @@ function TimelineBody({ month }: { month: string }) {
     el.scrollLeft = Math.max(0, (todayIndex - 2) * colWidth);
   }, [month, loading, days, today]);
 
+  /**
+   * A sticky label can only move inside its bar. When most of a bar is under the sticky name column, the
+   * label would start mid-word, so hide it (the bar keeps its accessible name).
+   */
+  const updateLabels = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const style = getComputedStyle(el);
+    const nameW = parseFloat(style.getPropertyValue('--tl-name-w')) || 0;
+    const padCont = parseFloat(style.getPropertyValue('--tl-bar-pad-cont')) || 0;
+    const limit = el.getBoundingClientRect().left + el.clientLeft + nameW;
+    for (const bar of el.querySelectorAll<HTMLElement>('[data-testid="timeline-bar"]')) {
+      const rect = bar.getBoundingClientRect();
+      const label = bar.firstElementChild as HTMLElement | null;
+      let hide = false;
+      let max: number | null = null;
+      if (label && rect.left < limit) {
+        const visible = rect.right - limit;
+        if (visible < MIN_VISIBLE_FOR_LABEL) hide = true;
+        else if (visible < label.scrollWidth + padCont) max = Math.max(0, visible - padCont);
+      }
+      if (hide) bar.dataset.labelHidden = 'true';
+      else delete bar.dataset.labelHidden;
+      // A partly visible bar keeps its label, shortened with an ellipsis to the visible part.
+      if (max !== null) bar.style.setProperty('--label-max', `${max}px`);
+      else bar.style.removeProperty('--label-max');
+    }
+  }, []);
+
+  const frame = useRef(0);
   const onScroll = () => {
     const el = scrollRef.current;
     if (el) el.dataset.scrolled = el.scrollLeft > 0 ? 'true' : 'false';
+    if (frame.current) cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(updateLabels);
   };
+
+  // Also once after the initial auto-scroll, and whenever the bars change.
+  useLayoutEffect(() => {
+    updateLabels();
+  }, [updateLabels, month, loading, visible, days, today]);
+  useEffect(() => {
+    window.addEventListener('resize', updateLabels);
+    return () => {
+      window.removeEventListener('resize', updateLabels);
+      if (frame.current) cancelAnimationFrame(frame.current);
+    };
+  }, [updateLabels]);
 
   const gridStyle = { '--tl-days': days.length } as CSSProperties;
 

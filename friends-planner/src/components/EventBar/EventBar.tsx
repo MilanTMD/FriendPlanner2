@@ -26,6 +26,7 @@ function classes(segment: Segment, variant: 'calendar' | 'timeline'): string {
     variant === 'calendar' ? styles.calendar : styles.timeline,
     segment.continuesBefore ? styles.before : '',
     segment.continuesAfter ? styles.after : '',
+    segment.span === 1 ? styles.single : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -78,6 +79,7 @@ export function EventBar({
       className={classes(segment, variant)}
       style={style}
       data-testid="timeline-bar"
+      title={title}
       aria-label={`${personName}: ${title}, ${place}, ${formatRange(startDate, endDate)}`}
       onClick={() => onOpen?.(segment.eventId)}
       {...hooks}

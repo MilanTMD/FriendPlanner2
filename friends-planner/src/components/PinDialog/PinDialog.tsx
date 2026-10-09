@@ -70,11 +70,9 @@ export function PinDialog({ person, onVerified, onCancel }: PinDialogProps) {
       title={`Enter ${person.name}'s PIN`}
       onClose={onCancel}
       testId="pin-dialog"
+      preTitle={<PersonBadge name={person.name} colorId={person.colorId} variant="chip" />}
     >
       <form onSubmit={(e) => void submit(e)} className={styles.form} noValidate>
-        <div className={styles.badge}>
-          <PersonBadge name={person.name} colorId={person.colorId} variant="chip" />
-        </div>
         <PinInput
           label="PIN"
           value={pin}
@@ -84,6 +82,7 @@ export function PinDialog({ person, onVerified, onCancel }: PinDialogProps) {
           }}
           error={locked ? undefined : error}
           disabled={locked}
+          wide
           autoFocusField
         />
         {locked ? (

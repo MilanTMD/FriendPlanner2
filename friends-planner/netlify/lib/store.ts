@@ -31,14 +31,46 @@ export function storeNameFor(deployContext: string | undefined): string {
   return ctx === 'production' ? 'friends-planner' : `friends-planner-${ctx.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 }
 
-/** Netlify Blobs, site-wide store with strong consistency. The default region is used on purpose. */
-export function createBlobsStore(deployContext: string | undefined): KeyValueStore {
-  const store = getStore({ name: storeNameFor(deployContext), consistency: 'strong' });
+/**
+ * Netlify Blobs, site-wide store with strong consistency. The default region is used on purpose.
+ *
+ * Production Blobs return an ETag on reads. The local sandbox used by `netlify dev` returns ETags on
+ * writes and in list() results but not on reads, so there the ETag is taken from list() on both sides of
+ * the read; if the two agree, the data we read is the version that ETag names.
+ */
+export interface LocalBlobsConnection {
+  siteID: string;
+  token: string;
+  /** URL of a local BlobsServer (used by the production preview script). */
+  edgeURL: string;
+}
+
+export function createBlobsStore(deployContext: string | undefined, local?: LocalBlobsConnection): KeyValueStore {
+  const store = getStore({
+    name: storeNameFor(deployContext),
+    consistency: 'strong',
+    ...(local ? { siteID: local.siteID, token: local.token, edgeURL: local.edgeURL, uncachedEdgeURL: local.edgeURL } : {}),
+  });
+
+  async function listEtag(key: string): Promise<string> {
+    const { blobs } = await store.list({ prefix: key });
+    return blobs.find((b) => b.key === key)?.etag ?? '';
+  }
+
   return {
     async getWithMetadata<T>(key: string): Promise<StoreEntry<T> | null> {
-      const result = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
-      if (!result) return null;
-      return { data: result.data as T, etag: result.etag ?? '' };
+      const first = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+      if (!first) return null;
+      if (first.etag) return { data: first.data as T, etag: first.etag };
+      // Local sandbox: no ETag on reads. Bracket a second read with two list() calls.
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const before = await listEtag(key);
+        const again = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+        if (!again) return null;
+        const after = await listEtag(key);
+        if (before === after) return { data: again.data as T, etag: after };
+      }
+      throw new Error('Blobs read was not stable');
     },
     async setJSON(key, value, conditions) {
       const options =

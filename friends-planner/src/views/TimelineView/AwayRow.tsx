@@ -37,9 +37,9 @@ export function AwayRow({
             data-testid="away-cell"
             data-date={date}
             data-count={count}
-            aria-label={`${count} away on ${date}`}
           >
             <span aria-hidden="true">{count > 0 ? count : '–'}</span>
+            <span className="sr-only">{count} away</span>
           </div>
         );
       })}

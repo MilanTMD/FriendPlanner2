@@ -62,6 +62,14 @@
   padding: 0;
 }
 
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
 .title {
   min-width: 0;
   font-size: var(--text-lg);
@@ -135,11 +143,16 @@
   max-height: calc(100dvh - 24px);
 }
 .centered .body {
-  padding: var(--space-6);
+  padding: var(--space-4) var(--space-6) var(--space-6);
 }
 .centered .header {
-  padding: 0;
+  padding: var(--space-6) var(--space-6) 0;
   min-height: 0;
+}
+.centered .title {
+  font-size: var(--text-xl);
+  line-height: var(--leading-xl);
+  letter-spacing: -0.01em;
 }
 .centered .footer {
   padding: var(--space-4) var(--space-6) var(--space-6);

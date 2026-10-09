@@ -6,6 +6,9 @@ test-results/
 playwright-report/
 blob-report/
 *.log
+# test output dumps
+e2e-test-output*.txt
+*-test-output.txt
 .DS_Store
 
 # secrets: never commit

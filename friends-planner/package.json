@@ -20,7 +20,7 @@
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install chromium",
     "seed": "tsx scripts/seed.ts",
-    "serve:prod": "npx --yes netlify-cli@27 serve",
+    "serve:prod": "npm run build && tsx scripts/serve-prod.ts",
     "check": "npm run lint && npm run typecheck && npm run typecheck:tests && npm run test:unit:tz"
   },
   "dependencies": {

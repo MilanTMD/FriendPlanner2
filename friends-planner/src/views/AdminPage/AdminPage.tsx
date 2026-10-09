@@ -77,7 +77,7 @@ function AdminPanel() {
                   <Button size="sm" icon={KeyRound} onClick={() => setResetting(person)} aria-label={`Reset PIN: ${person.name}`}>
                     Reset PIN
                   </Button>
-                  <Button size="sm" variant="dangerGhost" icon={Trash2} onClick={() => setDeleting(person)} aria-label={`Delete person: ${person.name}`}>
+                  <Button size="sm" variant="dangerGhost" className={styles.deleteBtn ?? ''} icon={Trash2} onClick={() => setDeleting(person)} aria-label={`Delete person: ${person.name}`}>
                     Delete person
                   </Button>
                 </div>

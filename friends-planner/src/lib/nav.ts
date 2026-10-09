@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 import { navigate as browserNavigate, useBrowserLocation, type BrowserLocationHook } from 'wouter/use-browser-location';
+import { useLocation, useSearch } from 'wouter';
 import { useLastView } from '../state/LastViewContext';
+import { isViewPath } from '../routes';
+import { baseFor } from './baseFor';
 
 /** History entries created by the app carry an index, so we know whether "back" stays inside the app. */
 function currentIndex(): number {
@@ -25,9 +28,14 @@ export function previousEntryIsApp(): boolean {
 
 /** Closes a sheet: browser back when the previous entry is ours, otherwise to the last calendar/timeline. */
 export function useCloseSheet(): () => void {
-  const { lastViewPath } = useLastView();
+  const { lastViewPath, hasRealView } = useLastView();
+  const [path] = useLocation();
+  const search = useSearch();
+  // The page shown underneath the sheet is where closing lands when there is no history to go back to.
+  const underneath = baseFor(path, search, lastViewPath, hasRealView);
+  const fallback = isViewPath(underneath) || underneath === '/people' ? underneath : lastViewPath;
   return useCallback(() => {
     if (previousEntryIsApp()) window.history.back();
-    else appNavigate(lastViewPath, { replace: true });
-  }, [lastViewPath]);
+    else appNavigate(fallback, { replace: true });
+  }, [fallback]);
 }

@@ -33,9 +33,20 @@ function cspMeta(): Plugin {
 export default defineConfig({
   plugins: [react(), cspMeta()],
   build: {
-    assetsDir: 'static',
+    // Hashed bundles are emitted flat as "static-*" files in dist/ instead of a dist/static/ directory:
+    // Netlify CLI 27 on Windows serves nested static files with backslashes (403) whenever the SPA
+    // catch-all redirect exists, which breaks `netlify serve`. Production Netlify is unaffected, and
+    // netlify.toml still gives these files immutable caching.
+    assetsDir: '',
     target: 'es2022',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        entryFileNames: 'static-[name]-[hash].js',
+        chunkFileNames: 'static-[name]-[hash].js',
+        assetFileNames: 'static-[name]-[hash][extname]',
+      },
+    },
   },
   server: {
     port: 5173,

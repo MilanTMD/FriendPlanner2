@@ -98,8 +98,29 @@
   }
 }
 
-/* Timeline bars: the label is the plan title only. */
-.timeline .label {
+/* Timeline bars: the label is the plan title only. The bar carries the padding; the label is sticky so a long
+   bar whose start is scrolled off-screen stays labelled (no overflow:hidden between it and the scroller). */
+.timeline {
+  padding-inline: var(--pad);
+}
+.timeline.before {
+  padding-inline-start: var(--pad-cont);
+}
+.timeline.after {
+  padding-inline-end: var(--pad-cont);
+}
+/* A 1-day bar is 32px wide: tight padding so the label reads "De..." with a complete ellipsis. */
+.timeline.single:not(.before):not(.after) {
+  padding-inline: var(--space-1);
+}
+.timeline .label,
+.timeline.before .label,
+.timeline.after .label {
+  position: sticky;
+  inset-inline-start: calc(var(--tl-name-w) + var(--tl-bar-pad-cont));
+  width: fit-content;
+  max-width: min(100%, var(--label-max, 100%));
+  padding-inline: 0;
   font-weight: var(--weight-semibold);
 }
 
@@ -131,6 +152,10 @@
 
 .timeline:active {
   transform: scale(0.98);
+}
+
+.bar[data-label-hidden="true"] .label {
+  visibility: hidden;
 }
 
 /* Post-save highlight: a ring that fades in and out. */

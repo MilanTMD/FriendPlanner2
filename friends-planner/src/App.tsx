@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Redirect, Route, Router, Switch, useLocation, useSearch } from 'wouter';
 import { isValidISODate, todayLocal, toMonthKey } from '../shared/dates';
 import { baseFor } from './lib/baseFor';
+import { AppMark } from './components/AppMark/AppMark';
 import { AppShell } from './components/AppShell/AppShell';
 import { Button } from './components/Button/Button';
 import { ToastRegion } from './components/Toast/ToastRegion';
@@ -30,6 +31,7 @@ function LoadingShell() {
   return (
     <div className="loading-shell" aria-busy="true">
       <div className="loading-shell__header">
+        <AppMark size={24} />
         <span className="loading-shell__name">Friends Plans</span>
       </div>
       <div className="loading-shell__toolbar" />

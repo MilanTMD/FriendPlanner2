@@ -201,6 +201,7 @@ function EventFormBody({ existing }: { existing: PlanEvent | undefined }) {
                         onChange={() => void choosePerson(p.id)}
                         className={styles.radioInput}
                         data-field={index === 0 ? 'personId' : undefined}
+                        data-autofocus={index === 0 ? '' : undefined}
                       />
                       <span className={styles.radioMark} aria-hidden="true" />
                       <PersonBadge name={p.name} colorId={p.colorId} variant="row" />
@@ -242,7 +243,7 @@ function EventFormBody({ existing }: { existing: PlanEvent | undefined }) {
           maxLength={LIMITS.titleMax + 20}
           enterKeyHint="next"
           autoComplete="off"
-          data-autofocus=""
+          data-autofocus={showPicker ? undefined : ''}
           data-field="title"
         />
         <TextField

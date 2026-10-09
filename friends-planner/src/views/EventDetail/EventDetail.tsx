@@ -6,7 +6,6 @@ import { ButtonLink, Button } from '../../components/Button/Button';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { EmptyState } from '../../components/EmptyState/EmptyState';
 import { Icon } from '../../components/Icon/Icon';
-import { PersonBadge } from '../../components/PersonBadge/PersonBadge';
 import { Sheet } from '../../components/Sheet/Sheet';
 import { Skeleton } from '../../components/Skeleton/Skeleton';
 import { useCloseSheet } from '../../lib/nav';
@@ -87,7 +86,9 @@ export function EventDetail({ id }: { id: string }) {
     <>
       <Sheet title="Plan" onClose={close} testId="event-detail">
         <div className={styles.owner}>
-          <PersonBadge name={event.personName} colorId={event.colorId} variant="chip" />
+          <span className={styles.ownerPill} data-color={event.colorId}>
+            {event.personName}
+          </span>
         </div>
         <h3 className={styles.title}>{event.title}</h3>
         <ul className={styles.meta}>
